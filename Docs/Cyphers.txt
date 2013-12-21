@@ -1,0 +1,225 @@
+MATCH  (me:User), (me-[:LIKES]->attributes<-[:HAS]-person-[:LIKES]->requirements<-[:HAS]-me)
+WHERE  me.DocumentUserID = "Daniel" 
+RETURN me.DocumentUserID AS me_Name,
+       person.DocumentUserID AS their_name,
+       COLLECT(DISTINCT attributes.DocumentAttributeID) AS my_interests,
+       COLLECT(DISTINCT requirements.DocumentAttributeID) AS their_interests,
+       COUNT(DISTINCT attributes.DocumentAttributeID) AS my_interests_count,
+       COUNT(DISTINCT requirements.DocumentAttributeID) AS their_interests_count
+
+
+MATCH  (me:User), (me-[l1:LIKES]->attributes<-[h1:HAS]-person-[l2:LIKES]->requirements<-[h2:HAS]-me)
+WHERE  me.DocumentUserID = "Daniel" 
+       and (l1.Weight >= h1.Weight-2 and l1.Weight <= h1.Weight+2)
+       and (l2.Weight >= h2.Weight-2 and l2.Weight <= h2.Weight+2)
+RETURN me.DocumentUserID AS me_Name,
+       person.DocumentUserID AS their_name,
+       COLLECT(DISTINCT attributes.DocumentAttributeID) AS my_interests,
+       COLLECT(DISTINCT requirements.DocumentAttributeID) AS their_interests,
+       COUNT(DISTINCT attributes.DocumentAttributeID) AS my_interests_count,
+       COUNT(DISTINCT requirements.DocumentAttributeID) AS their_interests_count
+
+
+MATCH (me:User), 
+      (me-[:ATTENDS]->mySchool-[:Exists]->network<-[:EXISTS]-theirSchool<-[:ATTENDS]-person),
+WHERE me.DocumentUserID = {} AND
+     
+	 (me.Orientation = "Straight" AND person.Orientation IN ("Bisexual", "Straight") AND me.Gender <> person.Gender) OR
+	 (me.Orientation = "Gay" AND person.Orientation IN ("Bisexual", "Gay") AND me.Gender = person.Gender) OR
+	 (me.Orientation = "Bisexual" AND 
+		(person.Orientation = "Straight" AND me.Gender <> person.Gender) OR
+		(person.Orientation IN ("Bisexual", "Gay") AND me.Gender = person.Gender)
+	 )
+
+	 AND
+     me-[:LIKES]->()<-[:HAS]-person AND
+     me-[:HAS]->()<-[:LIKES]-person AND
+	 
+WITH   person, 
+       me, 
+       Distinct mySchool as my_school, 
+       Distinct theirSchool as thier_school
+MATCH  (me-[l1:LIKES]->attributes<-[h1:HAS]-person-[l2:LIKES]->requirements<-[h2:HAS]-me)
+WHERE  (l1.Weight >= h1.Weight-4 and l1.Weight <= h1.Weight+4) AND
+       (l2.Weight >= h2.Weight-4 and l2.Weight <= h2.Weight+4)
+RETURN me.DocumentUserID as me_name
+       person.DocumentUserID AS person_name,
+       my_school.DocumentSchoolID as my_school_name,
+       thier_school.DocumentSchoolID as their_school_name,
+       COLLECT(DISTINCT attributes.DocumentAttributeID) AS my_interests,
+       COLLECT(DISTINCT requirements.DocumentAttributeID) AS their_interests,
+       COUNT(DISTINCT attributes) AS matching_wants,
+       COUNT(DISTINCT requirements) AS matching_has
+ORDER BY matching_wants / (1.0 / matching_has) DESC
+LIMIT 100;
+
+
+MATCH (me:User), 
+      (me-[:ATTENDS]->mySchool-[:Exists]->network<-[:EXISTS]-theirSchool<-[:ATTENDS]-person),
+WHERE me.DocumentUserID = {} AND
+     
+	 (me.Orientation = "Straight" AND person.Orientation IN ["Bisexual", "Straight"] AND me.Gender <> person.Gender) OR
+	 (me.Orientation = "Gay" AND person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender) OR
+	 (me.Orientation = "Bisexual" AND 
+		(person.Orientation = "Straight" AND me.Gender <> person.Gender) OR
+		(person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+	 )
+
+	 AND
+     me-[:LIKES]->()<-[:HAS]-person AND
+     me-[:HAS]->()<-[:LIKES]-person AND
+	 
+WITH   person, 
+       me, 
+       Distinct mySchool as my_school, 
+       Distinct theirSchool as thier_school
+MATCH  (me-[l1:LIKES]->attributes<-[h1:HAS]-person-[l2:LIKES]->requirements<-[h2:HAS]-me)
+RETURN me.DocumentUserID as me_name
+       person.DocumentUserID AS person_name,
+       my_school.DocumentSchoolID as my_school_name,
+       thier_school.DocumentSchoolID as their_school_name,
+       COLLECT(DISTINCT attributes.DocumentAttributeID) AS my_interests,
+       COLLECT(DISTINCT requirements.DocumentAttributeID) AS their_interests,
+       COUNT(DISTINCT attributes) AS matching_wants,
+       COUNT(DISTINCT requirements) AS matching_has,
+
+      -- sum the varience of my likes / their has (lower % diff the better)
+      sum((abs(l1.Weight - h1.Weight) / ((l1.Weight + h1.Weight) / 2)) * 100) as sum_percent_diff
+
+ORDER BY matching_wants / (1.0 / matching_has) DESC
+LIMIT 100;
+
+
+match (me:User)-[r1:ATTENDS]->(sch:School), (person:User)-[r2:ATTENDS]->(theirsch:School), (n:Network)
+where me.DocumentUserID = "Daniel" and
+      (sch-[:EXISTS]->n and theirsch-[:EXISTS]->n) and
+      (
+            (me.Orientation = "Straight" AND person.Orientation IN ["Bisexual", "Straight"] AND me.Gender <> person.Gender) 
+         or (me.Orientation = "Gay" AND person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+         or (me.Orientation = "Bisexual" 
+             and (
+	                (person.Orientation = "Straight" AND me.Gender <> person.Gender) 
+              	 or (person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+                 )
+             )
+       )
+and (me-[:LIKES]->()<-[:HAS]-person) 
+with me, person, r1, r2, sch, theirsch, n
+MATCH  me-[l1:LIKES]->attributes<-[h1:HAS]-person
+RETURN 
+n.DocumentNetworkID as network_name,
+me.DocumentUserID As me_name,
+sch.DocumentSchoolID as me_school,
+person.DocumentUserID as person_name,
+theirsch.DocumentSchoolID as their_school,
+COLLECT(attributes.DocumentAttributeID) as attribute_names,
+count(attributes.DocumentAttributeID) as num_attributes,
+sum((abs(l1.Weight - h1.Weight) / ((l1.Weight + h1.Weight) / 2)) * 100) as sum_percent_diff
+order by num_attributes desc, sum_percent_diff
+
+
+
+match (me:User)-[r1:ATTENDS]->(sch:School), (person:User)-[r2:ATTENDS]->(theirsch:School), (n:Network)
+where me.DocumentUserID = "Daniel" and
+      (sch-[:EXISTS]->n and theirsch-[:EXISTS]->n) and
+      (
+            (me.Orientation = "Straight" AND person.Orientation IN ["Bisexual", "Straight"] AND me.Gender <> person.Gender) 
+         or (me.Orientation = "Gay" AND person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+         or (me.Orientation = "Bisexual" 
+             and (
+	                (person.Orientation = "Straight" AND me.Gender <> person.Gender) 
+              	 or (person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+                 )
+             )
+       )
+//and (me-[:LIKES]->()<-[:HAS]-person) 
+with me, person, r1, r2, sch, theirsch, n
+OPTIONAL MATCH  me-[l1:LIKES]->attributes<-[h1:HAS]-person
+RETURN 
+n.DocumentNetworkID as network_name,
+me.DocumentUserID As me_name,
+sch.DocumentSchoolID as me_school,
+person.DocumentUserID as person_name,
+theirsch.DocumentSchoolID as their_school,
+COLLECT(attributes.DocumentAttributeID) as attribute_names,
+count(attributes.DocumentAttributeID) as num_attributes,
+sum((abs(case when l1 is null then 9 else l1.Weight - h1.Weight end) / case when l1 is null then 5.5 else ((l1.Weight + h1.Weight) / 2) end) * 100) as sum_percent_diff
+order by num_attributes desc, sum_percent_diff
+
+
+
+match (me:User)-[r1:ATTENDS]->(sch:School), (person:User)-[r2:ATTENDS]->(theirsch:School), (n:Network)
+where me.DocumentUserID = "Daniel" and
+      (sch-[:EXISTS]->n and theirsch-[:EXISTS]->n) and
+      (
+            (me.Orientation = "Straight" AND person.Orientation IN ["Bisexual", "Straight"] AND me.Gender <> person.Gender) 
+         or (me.Orientation = "Gay" AND person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+         or (me.Orientation = "Bisexual" 
+             and (
+	                (person.Orientation = ["Bisexual", "Straight"] AND me.Gender <> person.Gender) 
+              	 or (person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+                 )
+             )
+       )
+//and (me-[:LIKES]->()<-[:HAS]-person) 
+with me, person, r1, r2, sch, theirsch, n
+OPTIONAL MATCH  me-[l1:LIKES]->attributes<-[h1:HAS]-person
+WITH me, person, r1, r2, sch, theirsch, n, 
+count(attributes.DocumentAttributeID) as num_attributes, 
+COALESCE(avg(abs(COALESCE(l1.Weight - h1.Weight,0)) / (l1.Weight + h1.Weight) / 2),0.001) as avg_percent_diff_as_dec,
+COLLECT(attributes.DocumentAttributeID) as attribute_names
+return 
+n.DocumentNetworkID as network_name,
+me.DocumentUserID As me_name,
+sch.DocumentSchoolID as me_school,
+person.DocumentUserID as person_name,
+theirsch.DocumentSchoolID as their_school,
+attribute_names,
+num_attributes,
+avg_percent_diff_as_dec,
+case when avg_percent_diff_as_dec = 0 then (num_attributes / 0.001) else (num_attributes / avg_percent_diff_as_dec) end as ratio
+order by ratio desc
+
+
+match (me:User)-[r1:ATTENDS]->(sch:School), (person:User)-[r2:ATTENDS]->(theirsch:School), (n:Network)
+where me.DocumentUserID = "Daniel" and
+      (sch-[:EXISTS]->n and theirsch-[:EXISTS]->n) and
+      (
+            (me.Orientation = "Straight" AND person.Orientation IN ["Bisexual", "Straight"] AND me.Gender <> person.Gender) 
+         or (me.Orientation = "Gay" AND person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+         or (me.Orientation = "Bisexual" 
+             and (
+	                (person.Orientation = ["Bisexual", "Straight"] AND me.Gender <> person.Gender) 
+              	 or (person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+                 )
+             )
+       )
+with me, person, r1, r2, sch, theirsch, n
+OPTIONAL MATCH  me-[l1:LIKES]->attributeLikes<-[h1:HAS]-person
+OPTIONAL MATCH  me-[d1:DISLIKES]->attributeDislikes<-[h2:HAS]-person
+WITH me, person, r1, r2, sch, theirsch, n, 
+count(attributeLikes.DocumentAttributeID) as num_attributes, 
+count(attributeDislikes.DocumentAttributeID) as num_attributes_dis, 
+COALESCE(avg(abs(COALESCE(l1.Weight - h1.Weight,0)) / (l1.Weight + h1.Weight) / 2),0.001) as avg_percent_diff_as_dec,
+COALESCE(avg(abs(COALESCE(d1.Weight - h2.Weight,0)) / (d1.Weight + h2.Weight) / 2),0.001) as avg_percent_diff_as_dec_dis,
+COLLECT(attributeLikes.DocumentAttributeID) as attribute_names,
+COLLECT(attributeDislikes.DocumentAttributeID) as attribute_names_dis
+return 
+n.DocumentNetworkID as network_name,
+me.DocumentUserID As me_name,
+sch.DocumentSchoolID as me_school,
+person.DocumentUserID as person_name,
+theirsch.DocumentSchoolID as their_school,
+attribute_names,
+attribute_names_dis,
+num_attributes,
+num_attributes_dis,
+avg_percent_diff_as_dec,
+avg_percent_diff_as_dec_dis,
+case when avg_percent_diff_as_dec = 0 then (num_attributes / 0.001) else (num_attributes / avg_percent_diff_as_dec) end as ratio,
+case when avg_percent_diff_as_dec_dis = 0 then (num_attributes_dis / 0.001) else (num_attributes_dis / avg_percent_diff_as_dec_dis) end as ratio_dis,
+
+case when avg_percent_diff_as_dec = 0 then (num_attributes / 0.001) else (num_attributes / avg_percent_diff_as_dec) end - 
+case when avg_percent_diff_as_dec_dis = 0 then (num_attributes_dis / 0.001) else (num_attributes_dis / avg_percent_diff_as_dec_dis) end as totalRatio
+
+order by totalRatio desc

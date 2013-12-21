@@ -1,0 +1,13 @@
+Neo4Js
+
+Windows Service info:
+
+http://docs.neo4j.org/chunked/stable/server-installation.html#windows-install
+
+Docs:
+
+https://github.com/Readify/Neo4jClient/wiki
+
+Tutorials:
+
+http://www.cameronjtinker.com/post/2013/01/04/Beginning-with-Neo4j-and-Neo4jClient.aspx

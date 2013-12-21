@@ -1,0 +1,35 @@
+DELETE ALL USERS AND ATTRIBUTES:
+
+MATCH (a:User),(m:Attribute) OPTIONAL MATCH (a)-[r1]-(), (m)-[r2]-() DELETE a,r1,m,r2
+
+MATCH (n) RETURN n
+
+All nodes with relationships:
+
+      START n = node(*)
+      MATCH n-[r]-()
+      DELETE n, r
+
+All nodes without relationships:
+
+      START n = node(*) DELETE n
+
+Get All labels
+
+START n=node(*) RETURN labels(n)
+
+
+CREATE INDEX ON :User(DocumentUserID)
+CREATE INDEX ON :Attribute(DocumentAttributeID)
+CREATE INDEX ON :School(DocumentSchoolID)
+CREATE INDEX ON :Network(DocumentNetworkID)
+CREATE INDEX ON :Community(DocumentCommunityID)
+
+
+http://stackoverflow.com/questions/19534511/how-to-create-a-node-with-neo4jclient-in-neo4j-v2
+
+http://stackoverflow.com/questions/18719900/neo4jclient-does-not-add-properties-to-a-relationship
+
+https://bitbucket.org/Readify/neo4jclient/issue/74/
+
+

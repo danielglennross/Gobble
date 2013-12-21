@@ -1,0 +1,5 @@
+C:\Gobble\Gobble\Frameworks\MatchConstraints\bin\Debug\MatchConstraints.dll
+C:\Gobble\Gobble\Frameworks\MatchConstraints\bin\Debug\MatchConstraints.pdb
+C:\Gobble\Gobble\Frameworks\MatchConstraints\obj\Debug\MatchConstraints.csprojResolveAssemblyReference.cache
+C:\Gobble\Gobble\Frameworks\MatchConstraints\obj\Debug\MatchConstraints.dll
+C:\Gobble\Gobble\Frameworks\MatchConstraints\obj\Debug\MatchConstraints.pdb
