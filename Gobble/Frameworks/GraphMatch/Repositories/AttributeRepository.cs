@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GraphMatch.Providers;
+using GraphMatch.Entities;
+using GraphMatch.Relationships;
 using Neo4jClient;
 using Neo4jClient.Cypher;
 
@@ -19,6 +21,11 @@ namespace GraphMatch.Repositories
                 IsActive = true
             };
             return a;
+        }
+
+        public List<Entities.Attribute> GetAttributesForUser(User user, UserRelationships relationship)
+        {
+            return _provider.GetAttributesForUser(user, relationship);
         }
 
         public void InitalizeProvider(List<string> documentAttributeIDs)

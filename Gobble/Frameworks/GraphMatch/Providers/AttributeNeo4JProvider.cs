@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Neo4jClient;
 using Neo4jClient.Cypher;
 using GraphMatch.Entities;
+using GraphMatch.Relationships;
 using Constraints;
 
 namespace GraphMatch.Providers
@@ -15,6 +16,16 @@ namespace GraphMatch.Providers
         public void CreateAttributeIndexs()
         {
             _graphClient.Cypher.Create("INDEX ON :Attribute(DocumentAttributeID)").ExecuteWithoutResults();
+        }
+
+        public List<Entities.Attribute> GetAttributesForUser(User user, UserRelationships relationship)
+        {
+           return  _graphClient.Cypher
+                .Match(_queryLookup[(AllRelationshipTypes)relationship].RelationshipMatch)
+                .Where((User u) => u.DocumentUserID == user.DocumentUserID)
+                .Return(attr => attr.As<Entities.Attribute>())
+                .Results
+                .ToList();
         }
 
         public override bool Insert(Entities.Attribute newAttribute)

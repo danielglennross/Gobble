@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Neo4jClient;
 using Neo4jClient.Cypher;
 using GraphMatch.Entities;
+using GraphMatch.Relationships;
 using Constraints;
 
 namespace GraphMatch.Providers
@@ -16,10 +17,14 @@ namespace GraphMatch.Providers
 
         protected GraphClientWrapper _graphClient;
 
+        protected RelationshipQueryFetcher _queryLookup;
+
         public EntityNeo4JProvider()
         {
             _graphClient = new GraphClientWrapper(new Uri(CONNECTION_STRING));
             _graphClient.Connect();
+
+            _queryLookup = new RelationshipQueryFetcher();
         }
 
         public abstract bool Insert(T g);

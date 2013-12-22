@@ -23,7 +23,15 @@ namespace Test
             //UpdateAttributeRelationship();
             //InsertRelationshipThenDelete();
             //CreateAnotherNetworkOfResults();
-            MatchEngineTest();
+            //MatchEngineTest();
+            GetAttributesForUser();
+        }
+
+        public static void GetAttributesForUser()
+        {
+            var user = new GraphMatch.Entities.User() { DocumentUserID = "Daniel" };
+            GraphMatch.Repositories.AttributeRepository aRepo = new GraphMatch.Repositories.AttributeRepository();
+            var attributes = aRepo.GetAttributesForUser(user, GraphMatch.Relationships.UserRelationships.UserHasAttribute);
         }
 
         public static void MatchEngineTest()
