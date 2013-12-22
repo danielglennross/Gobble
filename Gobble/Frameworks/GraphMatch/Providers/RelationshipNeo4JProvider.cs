@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Neo4jClient;
 using Neo4jClient.Cypher;
 using GraphMatch.Entities;
+using GraphMatch.Providers;
 using GraphMatch.Relationships;
 using Constraints;
 
@@ -17,13 +18,13 @@ namespace GraphMatch.Providers
     {
         private const string CONNECTION_STRING = "http://localhost:7474/db/data";
 
-        protected GraphClient _graphClient;
+        protected GraphClientWrapper _graphClient;
 
         protected RelationshipQueryFetcher _queryLookup;
 
         public RelationshipNeo4JProvider()
         {
-            _graphClient = new GraphClient(new Uri(CONNECTION_STRING));
+            _graphClient = new GraphClientWrapper(new Uri(CONNECTION_STRING));
             _graphClient.Connect();
 
             _queryLookup = new RelationshipQueryFetcher();
