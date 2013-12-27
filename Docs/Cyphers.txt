@@ -223,3 +223,144 @@ case when avg_percent_diff_as_dec = 0 then (num_attributes / 0.001) else (num_at
 case when avg_percent_diff_as_dec_dis = 0 then (num_attributes_dis / 0.001) else (num_attributes_dis / avg_percent_diff_as_dec_dis) end as totalRatio
 
 order by totalRatio desc
+
+
+
+match (me:User)-[r1:ATTENDS]->(sch:School), (person:User)-[r2:ATTENDS]->(theirsch:School), (n:Network)
+where me.DocumentUserID = "Cathleen" and
+      (sch-[:EXISTS]->n and theirsch-[:EXISTS]->n) and
+      (
+            (me.Orientation = "Straight" AND person.Orientation IN ["Bisexual", "Straight"] AND me.Gender <> person.Gender) 
+         or (me.Orientation = "Gay" AND person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+         or (me.Orientation = "Bisexual" 
+             and (
+	                (person.Orientation = ["Bisexual", "Straight"] AND me.Gender <> person.Gender) 
+              	 or (person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+                 )
+             )
+       )
+with me, person, sch, theirsch, n, r1, r2
+MATCH  me-[l1:LIKES]->attributeLikes<-[l2:HAS]-person
+WITH me, person, sch, theirsch, n, l1, l2, attributeLikes, r1, r2
+,count(distinct l1) as H1, count(distinct l2) as H2
+return
+me.DocumentUserID,
+person.DocumentUserID,
+count(attributeLikes.DocumentAttributeID) as num_attributes,
+COLLECT(attributeLikes.DocumentAttributeID) as attribute_names,
+sum((1-ABS(l1.Weight/H1-l2.Weight/H2))*(l1.Weight+l2.Weight)/(H1+H2)) AS similarity
+order by similarity desc
+
+
+
+match (me:User)-[r1:ATTENDS]->(sch:School), (person:User)-[r2:ATTENDS]->(theirsch:School), (n:Network)
+where me.DocumentUserID = "Daniel" and
+      (sch-[:EXISTS]->n and theirsch-[:EXISTS]->n) and
+      (
+            (me.Orientation = "Straight" AND person.Orientation IN ["Bisexual", "Straight"] AND me.Gender <> person.Gender) 
+         or (me.Orientation = "Gay" AND person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+         or (me.Orientation = "Bisexual" 
+             and (
+	                (person.Orientation = "Straight" AND me.Gender <> person.Gender) 
+              	 or (person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+                 )
+             )
+       )
+with me, person, r1, r2, sch, theirsch, n
+MATCH  me-[l1:LIKES]->attributes<-[h1:HAS]-person
+optional match me-[l2:LIKES]->attributes2<-[h2:HAS]-person
+optional match attributes<-[l3:LIKES]-(u1:User)-[h3:LIKES]->attributes2
+RETURN
+collect(distinct attributes.DocumentAttributeID),collect(distinct attributes2.DocumentAttributeID),
+collect(distinct u1.DocumentUserID), //collect(distinct a.DocumentAttributeID), //b.DocumentAttributeID,
+n.DocumentNetworkID as network_name,
+me.DocumentUserID As me_name,
+sch.DocumentSchoolID as me_school,
+person.DocumentUserID as person_name,
+theirsch.DocumentSchoolID as their_school,
+COLLECT(Distinct attributes.DocumentAttributeID) as attribute_names,
+count(Distinct attributes.DocumentAttributeID) as num_attributes,
+avg((abs(case when l1 is null then 9 else l1.Weight - h1.Weight end) / case when l1 is null then 5.5 else ((l1.Weight + h1.Weight) / 2) end) * 100) as sum_percent_diff
+order by num_attributes desc, sum_percent_diff
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+match (me:User)-[r1:ATTENDS]->(sch:School), (person:User)-[r2:ATTENDS]->(theirsch:School), (n:Network)
+where me.DocumentUserID = "Daniel" and
+      (sch-[:EXISTS]->n and theirsch-[:EXISTS]->n) and
+      (
+            (me.Orientation = "Straight" AND person.Orientation IN ["Bisexual", "Straight"] AND me.Gender <> person.Gender) 
+         or (me.Orientation = "Gay" AND person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+         or (me.Orientation = "Bisexual" 
+             and (
+	                (person.Orientation = "Straight" AND me.Gender <> person.Gender) 
+              	 or (person.Orientation IN ["Bisexual", "Gay"] AND me.Gender = person.Gender)
+                 )
+             )
+       )
+with me, person, r1, r2, sch, theirsch, n
+optional MATCH  me-[l1:LIKES]->attributeLikes<-[h1:HAS]-person
+optional MATCH  me-[d1:DISLIKES]->attributeDislikes<-[h2:HAS]-person
+optional match me-[l2:LIKES]->attributeLikes2<-[h3:HAS]-person
+optional match attributeLikes<-[l3:LIKES]-(u1:User)-[l4:LIKES]->attributeLikes2
+
+WITH me, person, r1, r2, sch, theirsch, n, collect(distinct u1.DocumentUserID) as userCluster,
+count(distinct attributeLikes.DocumentAttributeID) as num_attributes, 
+count(distinct attributeDislikes.DocumentAttributeID) as num_attributes_dis, 
+COALESCE(avg(abs(COALESCE(l1.Weight - h1.Weight,0)) / (l1.Weight + h1.Weight) / 2),0.001) as avg_percent_diff_as_dec,
+COALESCE(avg(abs(COALESCE(d1.Weight - h2.Weight,0)) / (d1.Weight + h2.Weight) / 2),0.001) as avg_percent_diff_as_dec_dis,
+COLLECT(distinct attributeLikes.DocumentAttributeID) as attribute_names,
+COLLECT(distinct attributeDislikes.DocumentAttributeID) as attribute_names_dis
+
+RETURN
+userCluster,
+n.DocumentNetworkID as network_name,
+me.DocumentUserID as me_name,
+sch.DocumentSchoolID as me_school,
+person.DocumentUserID as person_name,
+theirsch.DocumentSchoolID as their_school,
+
+attribute_names,
+attribute_names_dis,
+num_attributes,
+num_attributes_dis,
+avg_percent_diff_as_dec,
+avg_percent_diff_as_dec_dis,
+case when avg_percent_diff_as_dec = 0 then (num_attributes / 0.001) else (num_attributes / avg_percent_diff_as_dec) end as ratio,
+case when avg_percent_diff_as_dec_dis = 0 then (num_attributes_dis / 0.001) else (num_attributes_dis / avg_percent_diff_as_dec_dis) end as ratio_dis,
+
+case when avg_percent_diff_as_dec = 0 then (num_attributes / 0.001) else (num_attributes / avg_percent_diff_as_dec) end - 
+case when avg_percent_diff_as_dec_dis = 0 then (num_attributes_dis / 0.001) else (num_attributes_dis / avg_percent_diff_as_dec_dis) end as totalRatio
+
+order by totalRatio desc
+
+//num_attributes,
+//num_attributes_dis,
+//attribute_names,
+//attribute_names_dis,
+//avg_percent_diff_as_dec,
+//avg_percent_diff_as_dec_dis
+
+//collect(distinct attributeLikes.DocumentAttributeID),
+//collect(distinct attributeLikes2.DocumentAttributeID),
+//collect(distinct u1.DocumentUserID),
+//n.DocumentNetworkID as network_name,
+//me.DocumentUserID As me_name,
+//sch.DocumentSchoolID as me_school,
+//person.DocumentUserID as person_name,
+//theirsch.DocumentSchoolID as their_school,
+//COLLECT(Distinct attributeLikes.DocumentAttributeID) as attribute_names,
+//count(Distinct attributeLikes.DocumentAttributeID) as num_attributes,
+//avg((abs(case when l1 is null then 9 else l1.Weight - h1.Weight end) / case when l1 is null then 5.5 else ((l1.Weight + h1.Weight) / 2) end) * 100) as sum_percent_diff
+//order by num_attributes desc, sum_percent_diff
