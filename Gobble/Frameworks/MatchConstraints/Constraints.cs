@@ -1,5 +1,10 @@
 ﻿namespace Constraints
 {
+    public enum QuestionUserRelationship
+    {
+        Has, Likes, Dislikes
+    }
+
     public enum UserOrientation
     {
         Straight,

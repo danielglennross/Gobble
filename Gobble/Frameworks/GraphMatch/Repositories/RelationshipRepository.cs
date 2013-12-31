@@ -23,17 +23,17 @@ namespace GraphMatch.Repositories
             _provider = new E();
         }
 
-        public virtual bool InsertRelationship(F relationship, T t, G g, int weight = 0)
+        public virtual bool Insert(F relationship, T t, G g, int weight = 0)
         {
             return _provider.Insert(relationship, t, g, weight);
         }
 
-        public virtual H GetRelationship(F relationship, T t, G g)
+        public virtual H Get(F relationship, T t, G g)
         {
             return _provider.Get(relationship, t, g);
         }
 
-        public virtual bool DeleteRelationship(F relationship, T t, G g)
+        public virtual bool Delete(F relationship, T t, G g)
         {
             return _provider.Delete(relationship, t, g);
         }

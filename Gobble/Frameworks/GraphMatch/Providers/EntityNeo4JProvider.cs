@@ -11,7 +11,7 @@ using Constraints;
 
 namespace GraphMatch.Providers
 {
-    public abstract class EntityNeo4JProvider<T>
+    public abstract class EntityNeo4JProvider<T> where T : Entity
     {
         private const string CONNECTION_STRING = "http://localhost:7474/db/data";
 
