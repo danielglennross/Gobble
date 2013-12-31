@@ -19,12 +19,6 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var connectionString = "mongodb://localhost";
-            var client = new MongoClient(connectionString);
-
-            var server = client.GetServer();
-            var database = server.GetDatabase("gobble"); 
-
             //var user = new GraphMatch.Entities.User() { DocumentUserID = "Daniel" };
             //var attr = new GraphMatch.Entities.Attribute() { DocumentAttributeID = "Funny" };
             //GraphMatch.Repositories.UserToAttributeRepository r = new GraphMatch.Repositories.UserToAttributeRepository();
@@ -37,7 +31,30 @@ namespace Test
             //InsertRelationshipThenDelete();
             //CreateAnotherNetworkOfResults();
             //MatchEngineTest();
-            GetAttributesForUser();
+            //GetAttributesForUser();
+            InsertUserToMongo();
+        }
+
+        public static void InsertUserToMongo()
+        {
+            DocumentMatch.Entities.Account account1; 
+            DocumentMatch.Entities.Account account2; 
+            account1 = new DocumentMatch.Entities.FacebookAccount() { OAuthToken = "testOAuth", UserId = "testUserID", Type = DocumentMatch.Entities.Account.AccountType.Facebook };
+            account2 = new DocumentMatch.Entities.GobbleAccount() {UserLogon = "testLogon", UserPassword = "testPassword", Type = DocumentMatch.Entities.Account.AccountType.Gobble };
+
+            DocumentMatch.Repositories.UserRepository uRepo = new DocumentMatch.Repositories.UserRepository();
+            var user = uRepo.CreateUser(new List<DocumentMatch.Entities.Account> { account1, account2 }, new List<string>() { "testRoles" }, new List<string>() { "testSchools" });
+
+            DocumentMatch.Entities.GobbleAccount pass = (DocumentMatch.Entities.GobbleAccount)user.Accounts[1];
+            string password = pass.UserPassword;
+            string decryptPassword = pass.GetDecryptedPassword();
+
+            string id = uRepo.Insert(user);
+
+            user.LastName = "Ross";
+            uRepo.Update(user);
+            var newUser = uRepo.Get(id);
+            uRepo.Delete(user);
         }
 
         public static void GetAttributesForUser()

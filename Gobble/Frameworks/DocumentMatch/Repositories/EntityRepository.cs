@@ -23,6 +23,11 @@ namespace DocumentMatch.Repositories
             return _provider.Insert(t);
         }
 
+        public virtual T Get(string id)
+        {
+            return _provider.Get(id);
+        }
+
         public virtual bool Update(T t)
         {
             return _provider.Update(t);

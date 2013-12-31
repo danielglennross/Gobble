@@ -69,6 +69,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Frameworks\DocumentMatch\DocumentMatch.csproj">
+      <Project>{2312ecb1-420d-4a62-b6fd-413ab7d6bf21}</Project>
+      <Name>DocumentMatch %28Frameworks\DocumentMatch\DocumentMatch%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Frameworks\GraphMatch\GraphMatch.csproj">
       <Project>{0b93c208-59fc-4f8f-8f4d-c5bdd4abbeea}</Project>
       <Name>GraphMatch %28Frameworks\GraphMatch\GraphMatch%29</Name>

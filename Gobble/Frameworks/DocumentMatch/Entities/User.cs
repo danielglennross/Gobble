@@ -10,34 +10,10 @@ using MongoDB.Driver.Builders;
 using MongoDB.Driver.GridFS;
 using MongoDB.Driver.Linq;
 using Constraints;
+using Common.Security;
 
 namespace DocumentMatch.Entities
 {
-    public class FacebookAccount
-    {
-        public string UserId { get; set; }
-        public string OAuthToken { get; set; }
-    }
-
-    public class GobbleAccount
-    {
-        public string UserLogon { get; set; }
-        public string UserPassword { get; set; }  
-    }
-
-    public class Account
-    {
-        public GobbleAccount GobbleAccount { get; set; }
-        public FacebookAccount FacebookAccount { get; set; }   
-    }
-
-    public class QuestionAnswer
-    {
-        public QuestionUserRelationship QuestionUserRelationship { get; set; }
-        public ObjectId Question_Id { get; set; }
-        public int Weight { get; set; }
-    }
-
     public class User : Entity
     {
         [BsonRepresentation(BsonType.ObjectId)]
@@ -54,5 +30,49 @@ namespace DocumentMatch.Entities
         public List<string> UserRole_Ids { get; set; }
         public List<Account> Accounts { get; set; }
         public List<QuestionAnswer> QuestionAnswers { get; set; }
+    }
+
+    public class FacebookAccount : Account
+    {
+        public string UserId { get; set; }
+        public string OAuthToken { get; set; }
+    }
+
+    public class GobbleAccount : Account
+    {
+        private EncryptionManager _encryptionManager;
+        private string _userPassword;
+
+        public string UserLogon { get; set; }
+
+        public string UserPassword 
+        {
+            get { return _userPassword; }
+            set { _userPassword = _encryptionManager.Encrypt(value); }
+        }
+
+        public GobbleAccount()
+        {
+            _encryptionManager = new EncryptionManager();
+        }
+
+        public string GetDecryptedPassword()
+        {
+            return _encryptionManager.Decrypt(_userPassword);
+        }
+    }
+
+    [BsonKnownTypes(typeof(FacebookAccount), typeof(GobbleAccount))]
+    public class Account
+    {
+        public enum AccountType { Gobble, Facebook };
+        public AccountType Type { get; set; }
+    }
+
+    public class QuestionAnswer
+    {
+        public QuestionUserRelationship QuestionUserRelationship { get; set; }
+        public ObjectId Question_Id { get; set; }
+        public int Weight { get; set; }
     }
 }
