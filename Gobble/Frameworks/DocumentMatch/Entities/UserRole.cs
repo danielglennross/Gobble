@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DocumentMatch.Entities
 {
-    class UserRole
+    public class UserRole : Entity
     {
+        public string Name { get; set; }
     }
 }

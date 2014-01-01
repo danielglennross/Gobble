@@ -12,14 +12,14 @@ using DocumentMatch.Entities;
 
 namespace DocumentMatch.Providers
 {
-    public class UserMongoDBProvider : EntityMongoDBProvider<User>
+    public class UserRoleMongoDBProvider : EntityMongoDBProvider<UserRole>
     {
-        public const string COLLECTION_NAME = "user";
+        public const string COLLECTION_NAME = "userRole";
 
-        public UserMongoDBProvider() 
+        public UserRoleMongoDBProvider()
             : base(COLLECTION_NAME)
         {
-            
+
         }
     }
 }

@@ -57,8 +57,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\EntityMongoDBProvider.cs" />
     <Compile Include="Providers\UserMongoDBProvider.cs" />
+    <Compile Include="Providers\UserRoleMongoDBProvider.cs" />
     <Compile Include="Repositories\EntityRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Repositories\UserRoleRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

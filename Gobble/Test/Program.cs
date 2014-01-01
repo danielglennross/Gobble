@@ -42,8 +42,12 @@ namespace Test
             account1 = new DocumentMatch.Entities.FacebookAccount() { OAuthToken = "testOAuth", UserId = "testUserID", Type = DocumentMatch.Entities.Account.AccountType.Facebook };
             account2 = new DocumentMatch.Entities.GobbleAccount() {UserLogon = "testLogon", UserPassword = "testPassword", Type = DocumentMatch.Entities.Account.AccountType.Gobble };
 
+            DocumentMatch.Repositories.UserRoleRepository uRoleRepo = new DocumentMatch.Repositories.UserRoleRepository();
+            var role = uRoleRepo.CreateUserRole("testRole");
+            var roleID = uRoleRepo.Insert(role);
+
             DocumentMatch.Repositories.UserRepository uRepo = new DocumentMatch.Repositories.UserRepository();
-            var user = uRepo.CreateUser(new List<DocumentMatch.Entities.Account> { account1, account2 }, new List<string>() { "testRoles" }, new List<string>() { "testSchools" });
+            var user = uRepo.CreateUser(new List<DocumentMatch.Entities.Account> { account1, account2 }, new List<string>() { roleID }, new List<string>() { "testSchools" });
 
             DocumentMatch.Entities.GobbleAccount pass = (DocumentMatch.Entities.GobbleAccount)user.Accounts[1];
             string password = pass.UserPassword;
@@ -55,6 +59,8 @@ namespace Test
             uRepo.Update(user);
             var newUser = uRepo.Get(id);
             uRepo.Delete(user);
+
+            uRoleRepo.Delete(role);
         }
 
         public static void GetAttributesForUser()

@@ -31,12 +31,28 @@ namespace DocumentMatch.Providers
             collection = database.GetCollection<T>(collectionName);
         }
 
-        public abstract string Insert(T user);
+        public virtual string Insert(T t)
+        {
+            collection.Insert(t);
+            return t.Id;
+        }
 
-        public abstract bool Update(T user);
+        public virtual bool Update(T t)
+        {
+            collection.Save(t);
+            return true;
+        }
 
-        public abstract T Get(string id);
+        public virtual T Get(string id)
+        {
+            return collection.AsQueryable<T>().SingleOrDefault(x => x.Id == id);
+        }
 
-        public abstract bool Delete(T user);
+        public virtual bool Delete(T t)
+        {
+            var query = Query<T>.EQ(e => e.Id, t.Id);
+            collection.Remove(query);
+            return true;
+        }
     }
 }

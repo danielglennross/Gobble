@@ -16,9 +16,6 @@ namespace DocumentMatch.Entities
 {
     public class User : Entity
     {
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
-
         public bool IsActive { get; set; }
         public string Email { get; set; }
         public List<string> School_Ids { get; set; }
