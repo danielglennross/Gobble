@@ -11,6 +11,8 @@ namespace GraphMatch.Relationships
         UserHasAttribute,
         UserLikesAttribute,
         UserDislikesAttribute,
+        UserMarksAttribute, // for external attributes, e.g FB likes
+
         UserAttendsSchool,
         UserMemberOfCommunity,
         SchoolExistsInNetwork
@@ -19,7 +21,8 @@ namespace GraphMatch.Relationships
     {
         UserHasAttribute = AllRelationshipTypes.UserHasAttribute,
         UserLikesAttribute = AllRelationshipTypes.UserLikesAttribute,
-        UserDislikesAttribute = AllRelationshipTypes.UserDislikesAttribute
+        UserDislikesAttribute = AllRelationshipTypes.UserDislikesAttribute,
+        UserMarksAttribute = AllRelationshipTypes.UserMarksAttribute
     }
     public enum SchoolRelationships
     {
@@ -66,6 +69,12 @@ namespace GraphMatch.Relationships
                 RelationshipDefinitionWithParam = "u-[r:DISLIKES {Data}]->attr", 
                 RelationshipDefinitionWithoutParam = "u-[r:DISLIKES]->attr",
                 RelationshipMatch = "(u:User)-[r:DISLIKES]->(attr:Attribute)"
+            });
+
+            _innerDictionary.Add(AllRelationshipTypes.UserMarksAttribute, new RelationshipQuery
+            {
+                RelationshipDefinitionWithoutParam = "u-[r:MARKS]->attr",
+                RelationshipMatch = "(u:User)-[r:MARKS]->(attr:Attribute)"
             });
 
             _innerDictionary.Add(AllRelationshipTypes.UserAttendsSchool, new RelationshipQuery

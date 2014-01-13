@@ -60,6 +60,7 @@ namespace Test
             var newUser = uRepo.Get(id);
             uRepo.Delete(user);
 
+            var newRole = uRoleRepo.Get(roleID);
             uRoleRepo.Delete(role);
         }
 
@@ -214,7 +215,15 @@ namespace Test
             schools.Add(new GraphMatch.Entities.School() { DocumentSchoolID = "Newcastle" });
             schools.Add(new GraphMatch.Entities.School() { DocumentSchoolID = "Northumbria" });
 
-            List<string> attributeDocIDs = new List<string>() { "Sweet", "Funny", "Sarcastic", "Cheap", "Pleasant" };
+            Dictionary<string, Constraints.AttributeSource> attributeDocIDs = new Dictionary<string, Constraints.AttributeSource> 
+            { 
+                { "Sweet", Constraints.AttributeSource.Gobble }, 
+                { "Funny", Constraints.AttributeSource.Gobble }, 
+                { "Sarcastic", Constraints.AttributeSource.Gobble }, 
+                { "Cheap", Constraints.AttributeSource.Gobble }, 
+                { "Pleasant", Constraints.AttributeSource.Gobble } 
+            };
+
             List<GraphMatch.Entities.Attribute> attributes = new List<GraphMatch.Entities.Attribute>();
             attributes.Add(new GraphMatch.Entities.Attribute() { DocumentAttributeID = "Sweet" });
             attributes.Add(new GraphMatch.Entities.Attribute() { DocumentAttributeID = "Funny" });

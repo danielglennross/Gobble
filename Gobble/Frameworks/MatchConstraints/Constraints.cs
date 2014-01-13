@@ -20,6 +20,12 @@
         NotSet
     }
 
+    public enum AttributeSource
+    {
+        Gobble,
+        Facebook
+    }
+
     public enum CommunityType
     {
         Course,

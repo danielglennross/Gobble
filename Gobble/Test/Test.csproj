@@ -69,6 +69,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Frameworks\Common\Common.csproj">
+      <Project>{ef151df1-b3ff-4702-94d1-18b767e0dd24}</Project>
+      <Name>Common %28Frameworks\Common\Common%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Frameworks\DocumentMatch\DocumentMatch.csproj">
       <Project>{2312ecb1-420d-4a62-b6fd-413ab7d6bf21}</Project>
       <Name>DocumentMatch %28Frameworks\DocumentMatch\DocumentMatch%29</Name>
