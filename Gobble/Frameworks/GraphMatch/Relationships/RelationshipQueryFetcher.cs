@@ -103,5 +103,10 @@ namespace GraphMatch.Relationships
         {
             get { return _innerDictionary[key]; }
         }
+
+        public bool DoesRelationshipHaveWeight(AllRelationshipTypes key)
+        {
+            return this[key].RelationshipDefinitionWithoutParam != null;
+        }
     }
 }

@@ -20,7 +20,7 @@
         NotSet
     }
 
-    public enum AttributeSource
+    public enum BookMarkSource
     {
         Gobble,
         Facebook
@@ -32,5 +32,19 @@
         Society,
         Social,
         NotSet
+    }
+
+    public enum Cities
+    {
+        Newcastle,
+        Durham,
+        Sunderland
+    }
+
+    public static class SchoolEmailPatterns
+    {
+        public const string NewcastleUniversity = "@ncl.ac.uk";
+        public const string NorthumbriaUniversity = "";
+        public const string SunderlandUniversity = "";
     }
 }

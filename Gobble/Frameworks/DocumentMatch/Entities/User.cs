@@ -16,15 +16,14 @@ namespace DocumentMatch.Entities
 {
     public class User : Entity
     {
-        public bool IsActive { get; set; }
         public string Email { get; set; }
-        public List<string> School_Ids { get; set; }
+        public List<string> SchoolIds { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public UserGender Gender { get; set; }
         public UserOrientation Orientation { get; set; }
-        public List<string> Community_Ids { get; set; }
-        public List<string> UserRole_Ids { get; set; }
+        public List<string> CommunityIds { get; set; }
+        public List<string> UserRoleIds { get; set; }
         public List<Account> Accounts { get; set; }
         public List<QuestionAnswer> QuestionAnswers { get; set; }
     }

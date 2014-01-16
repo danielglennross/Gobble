@@ -15,11 +15,11 @@ namespace DocumentMatch.Repositories
             User u = new User
             {
                 Accounts = accounts,
-                UserRole_Ids = userRoleIds,
-                School_Ids = schoolIds,
+                UserRoleIds = userRoleIds,
+                SchoolIds = schoolIds,
                 Orientation = Constraints.UserOrientation.NotSet,
                 Gender = Constraints.UserGender.NotSet,
-                Community_Ids = new List<string>(),
+                CommunityIds = new List<string>(),
                 QuestionAnswers = new List<QuestionAnswer>(),
                 Email = "",
                 FirstName = "",

@@ -14,13 +14,12 @@ namespace GraphMatch.Repositories
 {
     public class AttributeRepository : EntityRepository<Entities.Attribute, AttributeNeo4JProvider>
     {
-        public Entities.Attribute CreateAttribute(AttributeSource source)
+        public Entities.Attribute CreateAttribute()
         {
             Entities.Attribute a = new Entities.Attribute
             {
                 DocumentAttributeID = null,
-                IsActive = true,
-                Source = source
+                IsActive = true
             };
             return a;
         }
@@ -30,7 +29,7 @@ namespace GraphMatch.Repositories
             return _provider.GetAttributesForUser(user, relationship);
         }
 
-        public void InitalizeProvider(Dictionary<string, AttributeSource> documentAttributeIDs)
+        public void InitalizeProvider(List<string> documentAttributeIDs)
         {
             List<Entities.Attribute> attributes = PopulateAttributes(documentAttributeIDs);
             foreach (Entities.Attribute attr in attributes)
@@ -55,9 +54,9 @@ namespace GraphMatch.Repositories
             return base.Update(attribute);
         }
 
-        public List<Entities.Attribute> PopulateAttributes(Dictionary<string, AttributeSource> documentAttributeIDs)
+        public List<Entities.Attribute> PopulateAttributes(List<string> documentAttributeIDs)
         {
-            return documentAttributeIDs.Select(x => new Entities.Attribute() { DocumentAttributeID = x.Key, Source = x.Value, IsActive = true }).ToList();
+            return documentAttributeIDs.Select(x => new Entities.Attribute() { DocumentAttributeID = x, IsActive = true }).ToList();
         }
     }
 }

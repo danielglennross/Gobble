@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Attribute.cs" />
+    <Compile Include="Entities\BookMark.cs" />
     <Compile Include="Entities\Community.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\MessageThread.cs" />

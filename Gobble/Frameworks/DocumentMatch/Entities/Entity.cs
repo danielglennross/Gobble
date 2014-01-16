@@ -14,10 +14,20 @@ using Common.Security;
 
 namespace DocumentMatch.Entities
 {
-    [BsonKnownTypes(typeof(User), typeof(UserRole))]
+    // add all inheritors of entity here...
+    [BsonKnownTypes(
+        typeof(User), 
+        typeof(UserRole),
+        typeof(Attribute),
+        typeof(MessageThread),
+        typeof(Network),
+        typeof(Question),
+        typeof(Community)
+    )]
     public abstract class Entity
     {
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+        public bool IsActive { get; set; }
     }
 }

@@ -7,9 +7,10 @@ using Constraints;
 
 namespace DocumentMatch.Entities
 {
-    public class School : Entity
+    public class BookMark : Entity
     {
-        public string EmailPattern { get; set; }
-        public Cities City { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public BookMarkSource Source { get; set; }
     }
 }

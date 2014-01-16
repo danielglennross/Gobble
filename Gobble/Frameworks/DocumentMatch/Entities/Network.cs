@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace DocumentMatch.Entities
 {
-    class Network
+    public class Network : Entity
     {
+        public string Name { get; set; }
+        public List<string> SchoolIds { get; set; }
     }
 }

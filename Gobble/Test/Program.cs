@@ -215,13 +215,13 @@ namespace Test
             schools.Add(new GraphMatch.Entities.School() { DocumentSchoolID = "Newcastle" });
             schools.Add(new GraphMatch.Entities.School() { DocumentSchoolID = "Northumbria" });
 
-            Dictionary<string, Constraints.AttributeSource> attributeDocIDs = new Dictionary<string, Constraints.AttributeSource> 
+            List<string> attributeDocIDs = new List<string> 
             { 
-                { "Sweet", Constraints.AttributeSource.Gobble }, 
-                { "Funny", Constraints.AttributeSource.Gobble }, 
-                { "Sarcastic", Constraints.AttributeSource.Gobble }, 
-                { "Cheap", Constraints.AttributeSource.Gobble }, 
-                { "Pleasant", Constraints.AttributeSource.Gobble } 
+                "Sweet", 
+                "Funny",
+                "Sarcastic",
+                "Cheap", 
+                "Pleasant"
             };
 
             List<GraphMatch.Entities.Attribute> attributes = new List<GraphMatch.Entities.Attribute>();

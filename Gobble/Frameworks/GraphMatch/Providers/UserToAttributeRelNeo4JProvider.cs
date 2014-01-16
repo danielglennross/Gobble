@@ -16,7 +16,7 @@ namespace GraphMatch.Providers
     {
         public override bool Insert(UserRelationships relationship, Entities.Attribute attribute, User user, int weight = 0)
         {
-            if (weight <= 0 && _queryLookup[(AllRelationshipTypes)relationship].RelationshipDefinitionWithParam != null)
+            if (_queryLookup.DoesRelationshipHaveWeight((AllRelationshipTypes)relationship) && weight <= 0)
                 throw new InvalidOperationException("Weight must be > than 0");
 
             _graphClient.Cypher
