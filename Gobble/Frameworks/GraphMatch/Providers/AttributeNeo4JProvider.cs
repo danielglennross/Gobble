@@ -18,7 +18,7 @@ namespace GraphMatch.Providers
             _graphClient.Cypher.Create("INDEX ON :Attribute(DocumentAttributeID)").ExecuteWithoutResults();
         }
 
-        public List<Entities.Attribute> GetAttributesForUser(User user, UserRelationships relationship)
+        public List<Entities.Attribute> GetAttributesForUser(User user, UserAttributeRelationships relationship)
         {
            return  _graphClient.Cypher
                 .Match(_queryLookup[(AllRelationshipTypes)relationship].RelationshipMatch)

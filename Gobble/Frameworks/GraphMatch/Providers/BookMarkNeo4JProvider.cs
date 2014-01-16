@@ -15,7 +15,7 @@ namespace GraphMatch.Providers
             _graphClient.Cypher.Create("INDEX ON :BookMark(DocumentBookMarkID)").ExecuteWithoutResults();
         }
 
-        public List<BookMark> GetBookMarksForUser(User user, UserRelationships relationship)
+        public List<BookMark> GetBookMarksForUser(User user, UserAttributeRelationships relationship)
         {
             return _graphClient.Cypher
                  .Match(_queryLookup[(AllRelationshipTypes)relationship].RelationshipMatch)

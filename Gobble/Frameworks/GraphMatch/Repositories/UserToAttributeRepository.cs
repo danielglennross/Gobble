@@ -12,10 +12,10 @@ using Constraints;
 
 namespace GraphMatch.Repositories
 {
-    public class UserToAttributeRepository : RelationshipRepository<Entities.Attribute, User, UserToAttribute, UserToAttributeRelNeo4JProvider, UserRelationships>
+    public class UserToAttributeRepository : RelationshipRepository<Entities.Attribute, User, UserToAttribute, UserToAttributeRelNeo4JProvider, UserAttributeRelationships>
     {
         // specific to this class
-        public bool Update(UserRelationships relationship, Entities.Attribute attribute, User user, int weight)
+        public bool Update(UserAttributeRelationships relationship, Entities.Attribute attribute, User user, int weight)
         {
             return _provider.Update(relationship, attribute, user, weight);
         }

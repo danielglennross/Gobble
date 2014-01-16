@@ -11,7 +11,7 @@ using Neo4jClient.Cypher;
 
 namespace GraphMatch.Repositories
 {
-    public class UserToCommunityRepository : RelationshipRepository<Community, User, UserToCommunity, UserToCommunityRelNeo4JProvider, CommunityRelationships>
+    public class UserToCommunityRepository : RelationshipRepository<Community, User, UserToCommunity, UserToCommunityRelNeo4JProvider, UserCommunityRelationships>
     {
     }
 }

@@ -9,9 +9,9 @@ using Constraints;
 
 namespace GraphMatch.Providers
 {
-    public class SchoolToNetworkRelNeo4JProvider : RelationshipNeo4JProvider<Network, School, SchoolToNetwork, NetworkRelationships>
+    public class SchoolToNetworkRelNeo4JProvider : RelationshipNeo4JProvider<Network, School, SchoolToNetwork, SchoolNetworkRelationships>
     {
-        public override bool Insert(NetworkRelationships relationship, Network network, School school, int weight = 0)
+        public override bool Insert(SchoolNetworkRelationships relationship, Network network, School school, int weight = 0)
         {
             _graphClient.Cypher
                 .Match("(n:Network)", "(sch:School)")
@@ -22,7 +22,7 @@ namespace GraphMatch.Providers
             return true;
         }
 
-        public override SchoolToNetwork Get(NetworkRelationships relationship, Network network, School school)
+        public override SchoolToNetwork Get(SchoolNetworkRelationships relationship, Network network, School school)
         {
             return _graphClient.Cypher
                 .Match(_queryLookup[(AllRelationshipTypes)relationship].RelationshipMatch)
@@ -33,7 +33,7 @@ namespace GraphMatch.Providers
                 .SingleOrDefault();
         }
 
-        public override bool Delete(NetworkRelationships relationship, Network network, School school)
+        public override bool Delete(SchoolNetworkRelationships relationship, Network network, School school)
         {
             _graphClient.Cypher
                 .Match(_queryLookup[(AllRelationshipTypes)relationship].RelationshipMatch)

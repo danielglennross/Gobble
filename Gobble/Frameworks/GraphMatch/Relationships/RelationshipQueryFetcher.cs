@@ -11,28 +11,31 @@ namespace GraphMatch.Relationships
         UserHasAttribute,
         UserLikesAttribute,
         UserDislikesAttribute,
-        UserMarksAttribute, // for external attributes, e.g FB likes
+        UserMarksBookMark, // for external bookmarks, e.g FB likes
 
         UserAttendsSchool,
         UserMemberOfCommunity,
         SchoolExistsInNetwork
     }
-    public enum UserRelationships
+    public enum UserAttributeRelationships
     {
         UserHasAttribute = AllRelationshipTypes.UserHasAttribute,
         UserLikesAttribute = AllRelationshipTypes.UserLikesAttribute,
-        UserDislikesAttribute = AllRelationshipTypes.UserDislikesAttribute,
-        UserMarksAttribute = AllRelationshipTypes.UserMarksAttribute
+        UserDislikesAttribute = AllRelationshipTypes.UserDislikesAttribute
     }
-    public enum SchoolRelationships
+    public enum UserBookMarkRelationships
+    {
+        UserMarksBookMark = AllRelationshipTypes.UserMarksBookMark
+    }
+    public enum UserSchoolRelationships
     {
         UserAttendsSchool = AllRelationshipTypes.UserAttendsSchool
     }
-    public enum CommunityRelationships
+    public enum UserCommunityRelationships
     {
         UserMemberOfCommunity = AllRelationshipTypes.UserMemberOfCommunity
     }
-    public enum NetworkRelationships
+    public enum SchoolNetworkRelationships
     {
         SchoolExistsInNetwork = AllRelationshipTypes.SchoolExistsInNetwork
     }
@@ -71,10 +74,10 @@ namespace GraphMatch.Relationships
                 RelationshipMatch = "(u:User)-[r:DISLIKES]->(attr:Attribute)"
             });
 
-            _innerDictionary.Add(AllRelationshipTypes.UserMarksAttribute, new RelationshipQuery
+            _innerDictionary.Add(AllRelationshipTypes.UserMarksBookMark, new RelationshipQuery
             {
-                RelationshipDefinitionWithoutParam = "u-[r:MARKS]->attr",
-                RelationshipMatch = "(u:User)-[r:MARKS]->(attr:Attribute)"
+                RelationshipDefinitionWithoutParam = "u-[r:MARKS]->b",
+                RelationshipMatch = "(u:User)-[r:MARKS]->(b:BookMark)"
             });
 
             _innerDictionary.Add(AllRelationshipTypes.UserAttendsSchool, new RelationshipQuery

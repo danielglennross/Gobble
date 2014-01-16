@@ -9,9 +9,9 @@ using Constraints;
 
 namespace GraphMatch.Providers
 {
-    public class UserToCommunityRelNeo4JProvider : RelationshipNeo4JProvider<Community, User, UserToCommunity, CommunityRelationships>
+    public class UserToCommunityRelNeo4JProvider : RelationshipNeo4JProvider<Community, User, UserToCommunity, UserCommunityRelationships>
     {
-        public override bool Insert(CommunityRelationships relationship, Community community, User user, int weight = 0)
+        public override bool Insert(UserCommunityRelationships relationship, Community community, User user, int weight = 0)
         {
             _graphClient.Cypher
                 .Match("(u:User)", "(c:Community)")
@@ -22,7 +22,7 @@ namespace GraphMatch.Providers
             return true;
         }
 
-        public override UserToCommunity Get(CommunityRelationships relationship, Community community, User user)
+        public override UserToCommunity Get(UserCommunityRelationships relationship, Community community, User user)
         {
             return _graphClient.Cypher
                 .Match(_queryLookup[(AllRelationshipTypes)relationship].RelationshipMatch)
@@ -33,7 +33,7 @@ namespace GraphMatch.Providers
                 .SingleOrDefault();
         }
 
-        public override bool Delete(CommunityRelationships relationship, Community community, User user)
+        public override bool Delete(UserCommunityRelationships relationship, Community community, User user)
         {
             _graphClient.Cypher
                  .Match(_queryLookup[(AllRelationshipTypes)relationship].RelationshipMatch)

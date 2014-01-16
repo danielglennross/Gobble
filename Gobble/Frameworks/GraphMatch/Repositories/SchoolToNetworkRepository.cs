@@ -11,7 +11,7 @@ using Neo4jClient.Cypher;
 
 namespace GraphMatch.Repositories
 {
-    public class SchoolToNetworkRepository : RelationshipRepository<Network, School, SchoolToNetwork, SchoolToNetworkRelNeo4JProvider, NetworkRelationships>
+    public class SchoolToNetworkRepository : RelationshipRepository<Network, School, SchoolToNetwork, SchoolToNetworkRelNeo4JProvider, SchoolNetworkRelationships>
     {
     }
 }

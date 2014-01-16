@@ -19,6 +19,7 @@ namespace DocumentMatch.Entities
         typeof(User), 
         typeof(UserRole),
         typeof(Attribute),
+        typeof(BookMark),
         typeof(MessageThread),
         typeof(Network),
         typeof(Question),

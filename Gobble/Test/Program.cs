@@ -68,7 +68,7 @@ namespace Test
         {
             var user = new GraphMatch.Entities.User() { DocumentUserID = "Daniel" };
             GraphMatch.Repositories.AttributeRepository aRepo = new GraphMatch.Repositories.AttributeRepository();
-            var attributes = aRepo.GetAttributesForUser(user, GraphMatch.Relationships.UserRelationships.UserHasAttribute);
+            var attributes = aRepo.GetAttributesForUser(user, GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute);
         }
 
         public static void MatchEngineTest()
@@ -105,7 +105,7 @@ namespace Test
             var user = new GraphMatch.Entities.User() { DocumentUserID = "Daniel" };
 
             GraphMatch.Repositories.UserToAttributeRepository uToARepo = new GraphMatch.Repositories.UserToAttributeRepository();
-            uToARepo.Update(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attr, user, 10);
+            uToARepo.Update(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attr, user, 10);
         }
 
         public static void InsertRelationshipThenDelete()
@@ -114,8 +114,8 @@ namespace Test
             var user = new GraphMatch.Entities.User() { DocumentUserID = "Daniel" };
 
             GraphMatch.Repositories.UserToAttributeRepository uToARepo = new GraphMatch.Repositories.UserToAttributeRepository();
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attr, user, 1);
-            uToARepo.Delete(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attr, user);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attr, user, 1);
+            uToARepo.Delete(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attr, user);
         }
 
         public static void CreateAnotherNetworkOfResults()
@@ -169,12 +169,12 @@ namespace Test
             userRepo.Insert(user3);
 
             // school to networks
-            sToNRepo.Insert(GraphMatch.Relationships.NetworkRelationships.SchoolExistsInNetwork, networks[0], schools[0]);
+            sToNRepo.Insert(GraphMatch.Relationships.SchoolNetworkRelationships.SchoolExistsInNetwork, networks[0], schools[0]);
 
             // users to schools
-            uToSRepo.Insert(GraphMatch.Relationships.SchoolRelationships.UserAttendsSchool, schools[0], user1);
-            uToSRepo.Insert(GraphMatch.Relationships.SchoolRelationships.UserAttendsSchool, schools[0], user2);
-            uToSRepo.Insert(GraphMatch.Relationships.SchoolRelationships.UserAttendsSchool, schools[0], user3);
+            uToSRepo.Insert(GraphMatch.Relationships.UserSchoolRelationships.UserAttendsSchool, schools[0], user1);
+            uToSRepo.Insert(GraphMatch.Relationships.UserSchoolRelationships.UserAttendsSchool, schools[0], user2);
+            uToSRepo.Insert(GraphMatch.Relationships.UserSchoolRelationships.UserAttendsSchool, schools[0], user3);
 
             // users to attributes
             List<string> attributeDocIDs = new List<string>() { "Sweet", "Funny", "Sarcastic", "Cheap", "Pleasant" };
@@ -185,23 +185,23 @@ namespace Test
             attributes.Add(new GraphMatch.Entities.Attribute() { DocumentAttributeID = "Cheap" });
             attributes.Add(new GraphMatch.Entities.Attribute() { DocumentAttributeID = "Pleasant" });
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[1], user1, 3);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[2], user1, 4);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[1], user1, 3);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[2], user1, 4);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[0], user1, 5);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[4], user1, 5);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[0], user1, 5);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[4], user1, 5);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[2], user2, 7);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[3], user2, 2);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[2], user2, 7);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[3], user2, 2);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[0], user2, 8);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[3], user2, 9);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[0], user2, 8);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[3], user2, 9);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[1], user3, 10);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[4], user3, 1);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[1], user3, 10);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[4], user3, 1);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[2], user3, 4);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[1], user3, 5);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[2], user3, 4);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[1], user3, 5);
         }
 
         public static void InsertAllTest()
@@ -292,46 +292,46 @@ namespace Test
             userRepo.Insert(user5);
 
             // school to networks
-            sToNRepo.Insert(GraphMatch.Relationships.NetworkRelationships.SchoolExistsInNetwork, networks[0], schools[0]);
-            sToNRepo.Insert(GraphMatch.Relationships.NetworkRelationships.SchoolExistsInNetwork, networks[0], schools[1]);
+            sToNRepo.Insert(GraphMatch.Relationships.SchoolNetworkRelationships.SchoolExistsInNetwork, networks[0], schools[0]);
+            sToNRepo.Insert(GraphMatch.Relationships.SchoolNetworkRelationships.SchoolExistsInNetwork, networks[0], schools[1]);
 
             // users to schools
-            uToSRepo.Insert(GraphMatch.Relationships.SchoolRelationships.UserAttendsSchool, schools[0], user1);
-            uToSRepo.Insert(GraphMatch.Relationships.SchoolRelationships.UserAttendsSchool, schools[0], user2);
-            uToSRepo.Insert(GraphMatch.Relationships.SchoolRelationships.UserAttendsSchool, schools[0], user3);
-            uToSRepo.Insert(GraphMatch.Relationships.SchoolRelationships.UserAttendsSchool, schools[1], user4);
-            uToSRepo.Insert(GraphMatch.Relationships.SchoolRelationships.UserAttendsSchool, schools[1], user5);
+            uToSRepo.Insert(GraphMatch.Relationships.UserSchoolRelationships.UserAttendsSchool, schools[0], user1);
+            uToSRepo.Insert(GraphMatch.Relationships.UserSchoolRelationships.UserAttendsSchool, schools[0], user2);
+            uToSRepo.Insert(GraphMatch.Relationships.UserSchoolRelationships.UserAttendsSchool, schools[0], user3);
+            uToSRepo.Insert(GraphMatch.Relationships.UserSchoolRelationships.UserAttendsSchool, schools[1], user4);
+            uToSRepo.Insert(GraphMatch.Relationships.UserSchoolRelationships.UserAttendsSchool, schools[1], user5);
 
             // users to attributes
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[0], user1, 3);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[1], user1, 4);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[0], user1, 3);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[1], user1, 4);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[2], user1, 5);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[3], user1, 5);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[2], user1, 5);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[3], user1, 5);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[3], user2, 7);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[2], user2, 2);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[3], user2, 7);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[2], user2, 2);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[1], user2, 8);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[4], user2, 9);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[1], user2, 8);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[4], user2, 9);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[2], user3, 10);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[3], user3, 1);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[2], user3, 10);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[3], user3, 1);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[4], user3, 4);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[0], user3, 5);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[4], user3, 4);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[0], user3, 5);
             
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[4], user4, 3);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[2], user4, 3);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[4], user4, 3);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[2], user4, 3);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[1], user4, 7);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[3], user4, 2);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[1], user4, 7);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[3], user4, 2);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[1], user5, 1);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserHasAttribute, attributes[2], user5, 9);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[1], user5, 1);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserHasAttribute, attributes[2], user5, 9);
 
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[3], user5, 8);
-            uToARepo.Insert(GraphMatch.Relationships.UserRelationships.UserLikesAttribute, attributes[4], user5, 8);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[3], user5, 8);
+            uToARepo.Insert(GraphMatch.Relationships.UserAttributeRelationships.UserLikesAttribute, attributes[4], user5, 8);
         }
     }
 }

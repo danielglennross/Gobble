@@ -72,12 +72,14 @@
     <Compile Include="Providers\SchoolToNetworkRelNeo4JProvider.cs" />
     <Compile Include="Providers\UserNeo4JProvider.cs" />
     <Compile Include="Providers\UserToAttributeRelNeo4JProvider.cs" />
+    <Compile Include="Providers\UserToBookMarkRelNeo4JProvider.cs" />
     <Compile Include="Providers\UserToCommunityRelNeo4JProvider.cs" />
     <Compile Include="Providers\UserToSchoolRelNeo4JProvider.cs" />
     <Compile Include="Relationships\Relationship.cs" />
     <Compile Include="Relationships\RelationshipQueryFetcher.cs" />
     <Compile Include="Relationships\SchoolToNetwork.cs" />
     <Compile Include="Relationships\UserToAttribute.cs" />
+    <Compile Include="Relationships\UserToBookMark.cs" />
     <Compile Include="Relationships\UserToCommunity.cs" />
     <Compile Include="Relationships\UserToSchool.cs" />
     <Compile Include="Repositories\AttributeRepository.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Repositories\RelationshipRepository.cs" />
     <Compile Include="Repositories\UserToAttributeRepository.cs" />
+    <Compile Include="Repositories\UserToBookMarkRepository.cs" />
     <Compile Include="Repositories\UserToCommunityRepository.cs" />
     <Compile Include="Repositories\UserToSchoolRepository.cs" />
   </ItemGroup>

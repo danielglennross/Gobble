@@ -23,7 +23,7 @@ namespace GraphMatch.Repositories
             return b;
         }
 
-        public List<BookMark> GetBookMarksForUser(User user, UserRelationships relationship)
+        public List<BookMark> GetBookMarksForUser(User user, UserAttributeRelationships relationship)
         {
             return _provider.GetBookMarksForUser(user, relationship);
         }

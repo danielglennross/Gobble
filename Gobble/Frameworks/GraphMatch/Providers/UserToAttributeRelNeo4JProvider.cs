@@ -12,9 +12,9 @@ using Constraints;
 
 namespace GraphMatch.Providers
 {
-    public class UserToAttributeRelNeo4JProvider : RelationshipNeo4JProvider<Entities.Attribute, User, UserToAttribute, UserRelationships>
+    public class UserToAttributeRelNeo4JProvider : RelationshipNeo4JProvider<Entities.Attribute, User, UserToAttribute, UserAttributeRelationships>
     {
-        public override bool Insert(UserRelationships relationship, Entities.Attribute attribute, User user, int weight = 0)
+        public override bool Insert(UserAttributeRelationships relationship, Entities.Attribute attribute, User user, int weight = 0)
         {
             if (_queryLookup.DoesRelationshipHaveWeight((AllRelationshipTypes)relationship) && weight <= 0)
                 throw new InvalidOperationException("Weight must be > than 0");
@@ -29,7 +29,7 @@ namespace GraphMatch.Providers
             return true;
         }
 
-        public bool Update(UserRelationships relationship, Entities.Attribute attribute, User user, int weight)
+        public bool Update(UserAttributeRelationships relationship, Entities.Attribute attribute, User user, int weight)
         {
             if (weight <= 0)
                 throw new InvalidOperationException("Weight must be > than 0");
@@ -44,7 +44,7 @@ namespace GraphMatch.Providers
             return true;
         }
 
-        public override UserToAttribute Get(UserRelationships relationship, Entities.Attribute attribute, User user)
+        public override UserToAttribute Get(UserAttributeRelationships relationship, Entities.Attribute attribute, User user)
         {
             return _graphClient.Cypher
                .Match(_queryLookup[(AllRelationshipTypes)relationship].RelationshipMatch)
@@ -55,7 +55,7 @@ namespace GraphMatch.Providers
                .SingleOrDefault();
         }
 
-        public override bool Delete(UserRelationships relationship, Entities.Attribute attribute, User user)
+        public override bool Delete(UserAttributeRelationships relationship, Entities.Attribute attribute, User user)
         {
             _graphClient.Cypher
                 .Match(_queryLookup[(AllRelationshipTypes)relationship].RelationshipMatch)

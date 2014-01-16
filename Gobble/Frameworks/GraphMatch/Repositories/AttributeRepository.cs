@@ -24,7 +24,7 @@ namespace GraphMatch.Repositories
             return a;
         }
 
-        public List<Entities.Attribute> GetAttributesForUser(User user, UserRelationships relationship)
+        public List<Entities.Attribute> GetAttributesForUser(User user, UserAttributeRelationships relationship)
         {
             return _provider.GetAttributesForUser(user, relationship);
         }

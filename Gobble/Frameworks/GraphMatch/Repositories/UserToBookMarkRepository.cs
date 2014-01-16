@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GraphMatch.Entities;
-using GraphMatch.Providers;
 using GraphMatch.Relationships;
-using Neo4jClient;
-using Neo4jClient.Cypher;
+using GraphMatch.Providers;
+using Constraints;
 
 namespace GraphMatch.Repositories
 {
-    public class UserToSchoolRepository : RelationshipRepository<School, User, UserToSchool, UserToSchoolRelNeo4JProvider, UserSchoolRelationships>
+    public class UserToBookMarkRepository : RelationshipRepository<BookMark, User, UserToBookMark, UserToBookMarkRelNeo4JProvider, UserBookMarkRelationships>
     {
     }
 }
